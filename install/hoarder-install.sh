@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2024 tteck
+# Copyright (c) 2021-2025 tteck
 # Author: MickLesk (Canbiz) & vhsdream
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://hoarder.app/
 
-source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
+source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
@@ -17,13 +17,13 @@ msg_info "Installing Dependencies"
 $STD apt-get install -y \
   g++ \
   build-essential \
-  curl \
   git \
-  sudo \
   gnupg \
   ca-certificates \
-  chromium \
-  mc
+  chromium/stable \
+  chromium-common/stable \
+  graphicsmagick \
+  ghostscript
 msg_ok "Installed Dependencies"
 
 msg_info "Installing Additional Tools"
@@ -40,13 +40,13 @@ $STD dpkg -i meilisearch.deb
 wget -q https://raw.githubusercontent.com/meilisearch/meilisearch/latest/config.toml -O /etc/meilisearch.toml
 MASTER_KEY=$(openssl rand -base64 12)
 sed -i \
-    -e 's|^env =.*|env = "production"|' \
-    -e "s|^# master_key =.*|master_key = \"$MASTER_KEY\"|" \
-    -e 's|^db_path =.*|db_path = "/var/lib/meilisearch/data"|' \
-    -e 's|^dump_dir =.*|dump_dir = "/var/lib/meilisearch/dumps"|' \
-    -e 's|^snapshot_dir =.*|snapshot_dir = "/var/lib/meilisearch/snapshots"|' \
-    -e 's|^# no_analytics = true|no_analytics = true|' \
-    /etc/meilisearch.toml
+  -e 's|^env =.*|env = "production"|' \
+  -e "s|^# master_key =.*|master_key = \"$MASTER_KEY\"|" \
+  -e 's|^db_path =.*|db_path = "/var/lib/meilisearch/data"|' \
+  -e 's|^dump_dir =.*|dump_dir = "/var/lib/meilisearch/dumps"|' \
+  -e 's|^snapshot_dir =.*|snapshot_dir = "/var/lib/meilisearch/snapshots"|' \
+  -e 's|^# no_analytics = true|no_analytics = true|' \
+  /etc/meilisearch.toml
 msg_ok "Installed Meilisearch"
 
 msg_info "Installing Node.js"
@@ -55,6 +55,7 @@ curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dea
 echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" >/etc/apt/sources.list.d/nodesource.list
 $STD apt-get update
 $STD apt-get install -y nodejs
+$STD npm install -g corepack@0.31.0
 msg_ok "Installed Node.js"
 
 msg_info "Installing Hoarder"
@@ -77,7 +78,8 @@ $STD pnpm install --frozen-lockfile
 
 export DATA_DIR=/opt/hoarder_data
 HOARDER_SECRET=$(openssl rand -base64 36 | cut -c1-24)
-cat <<EOF >/opt/hoarder/.env
+mkdir -p /etc/hoarder
+cat <<EOF >/etc/hoarder/hoarder.env
 SERVER_VERSION=$RELEASE
 NEXTAUTH_SECRET="$HOARDER_SECRET"
 NEXTAUTH_URL="http://localhost:3000"
@@ -128,7 +130,7 @@ After=network.target hoarder-workers.service
 [Service]
 ExecStart=pnpm start
 WorkingDirectory=/opt/hoarder/apps/web
-EnvironmentFile=/opt/hoarder/.env
+EnvironmentFile=/etc/hoarder/hoarder.env
 Restart=always
 
 [Install]
@@ -158,7 +160,7 @@ After=network.target hoarder-browser.service meilisearch.service
 [Service]
 ExecStart=pnpm start:prod
 WorkingDirectory=/opt/hoarder/apps/workers
-EnvironmentFile=/opt/hoarder/.env
+EnvironmentFile=/etc/hoarder/hoarder.env
 Restart=always
 TimeoutStopSec=5
 

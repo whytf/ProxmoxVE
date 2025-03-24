@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2024 tteck
+# Copyright (c) 2021-2025 tteck
 # Author: tteck
 # Co-Author: MickLesk (Canbiz)
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
 # Source: https://github.com/msgbyte/tianji
 
-source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
+source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
@@ -22,13 +21,10 @@ $STD apt-get install -y \
   cmake \
   g++ \
   build-essential \
-  curl \
-  sudo \
   git \
   make \
   gnupg \
-  ca-certificates \
-  mc
+  ca-certificates
 msg_ok "Installed Dependencies"
 
 msg_info "Installing Node.js"
@@ -48,7 +44,7 @@ DB_PASS="$(openssl rand -base64 18 | cut -c1-13)"
 TIANJI_SECRET="$(openssl rand -base64 32 | cut -c1-24)"
 $STD sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;"
 $STD sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASS';"
-$STD sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;" 
+$STD sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
 $STD sudo -u postgres psql -c "ALTER DATABASE $DB_NAME OWNER TO $DB_USER;"
 $STD sudo -u postgres psql -c "ALTER USER $DB_USER WITH SUPERUSER;"
 echo "" >>~/tianji.creds
@@ -74,6 +70,7 @@ $STD pnpm build:server
 echo "${RELEASE}" >"/opt/${APPLICATION}_version.txt"
 cat <<EOF >/opt/tianji/src/server/.env
 DATABASE_URL="postgresql://$DB_USER:$DB_PASS@localhost:5432/$DB_NAME?schema=public"
+OPENAI_API_KEY=""
 JWT_SECRET="$TIANJI_SECRET"
 EOF
 cd /opt/tianji/src/server

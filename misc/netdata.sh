@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2024 tteck
+# Copyright (c) 2021-2025 tteck
 # Author: tteck (tteckster)
 # License: MIT
 # https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
@@ -59,9 +59,9 @@ install() {
   header_info
 
   msg_info "Setting up repository"
-  wget -q https://repo.netdata.cloud/repos/repoconfig/debian/bookworm/netdata-repo_2-2+debian12_all.deb
-  $STD dpkg -i netdata-repo_2-2+debian12_all.deb
-  rm -rf netdata-repo_2-2+debian12_all.deb
+  wget -q https://repo.netdata.cloud/repos/repoconfig/debian/bookworm/netdata-repo_5-1+debian12_all.deb
+  $STD dpkg -i netdata-repo_5-1+debian12_all.deb
+  rm -rf netdata-repo_5-1+debian12_all.deb
   msg_ok "Set up repository"
 
   msg_info "Installing Netdata"

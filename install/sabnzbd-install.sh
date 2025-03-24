@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2024 tteck
+# Copyright (c) 2021-2025 tteck
 # Author: tteck (tteckster)
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://sabnzbd.org/
 
-source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
+source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
@@ -14,9 +14,6 @@ network_check
 update_os
 
 msg_info "Installing Dependencies"
-$STD apt-get install -y curl
-$STD apt-get install -y sudo
-$STD apt-get install -y mc
 $STD apt-get install -y par2
 $STD apt-get install -y p7zip-full
 cat <<EOF >/etc/apt/sources.list.d/non-free.list
@@ -27,13 +24,13 @@ $STD apt-get install -y unrar
 rm /etc/apt/sources.list.d/non-free.list
 msg_ok "Installed Dependencies"
 
-msg_info "Updating Python3"
+msg_info "Setup Python3"
 $STD apt-get install -y \
   python3-dev \
   python3-pip
 $STD apt-get install -y python3-setuptools
 rm -rf /usr/lib/python3.*/EXTERNALLY-MANAGED
-msg_ok "Updated Python3"
+msg_ok "Setup Python3"
 
 msg_info "Installing SABnzbd"
 RELEASE=$(curl -s https://api.github.com/repos/sabnzbd/sabnzbd/releases/latest | grep "tag_name" | awk '{print substr($2, 2, length($2)-3) }')

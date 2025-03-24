@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-# Copyright (c) 2021-2024 tteck
+# Copyright (c) 2021-2025 tteck
 # Author: tteck (tteckster)
-# License: MIT
-# https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# License: MIT | https://github.com/community-scripts/ProxmoxVE/raw/main/LICENSE
+# Source: https://www.navidrome.org/
 
-source /dev/stdin <<< "$FUNCTIONS_FILE_PATH"
+source /dev/stdin <<<"$FUNCTIONS_FILE_PATH"
 color
 verb_ip6
 catch_errors
@@ -14,20 +14,17 @@ network_check
 update_os
 
 msg_info "Installing Dependencies (patience)"
-$STD apt-get install -y curl
-$STD apt-get install -y sudo
-$STD apt-get install -y mc
 $STD apt-get install -y ffmpeg
 msg_ok "Installed Dependencies"
 
-RELEASE=$(curl -s https://api.github.com/repos/navidrome/navidrome/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
-
 msg_info "Installing Navidrome"
+RELEASE=$(curl -s https://api.github.com/repos/navidrome/navidrome/releases/latest | grep "tag_name" | awk '{print substr($2, 3, length($2)-4) }')
 install -d -o root -g root /opt/navidrome
 install -d -o root -g root /var/lib/navidrome
 wget -q https://github.com/navidrome/navidrome/releases/download/v${RELEASE}/navidrome_${RELEASE}_linux_amd64.tar.gz -O Navidrome.tar.gz
 $STD tar -xvzf Navidrome.tar.gz -C /opt/navidrome/
 chown -R root:root /opt/navidrome
+chmod +x /opt/navidrome/navidrome
 mkdir -p /music
 cat <<EOF >/var/lib/navidrome/navidrome.toml
 MusicFolder = '/music'

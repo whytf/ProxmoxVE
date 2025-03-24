@@ -1,31 +1,39 @@
-> [!NOTE]
-> We are meticulous when it comes to merging code into the main branch, so please understand that we may reject pull requests that do not meet the project's standards. It's never personal. Also, game-related scripts have a lower chance of being merged.
+<!--🛑 New scripts must first be submitted to [ProxmoxVED](https://github.com/community-scripts/ProxmoxVED) for testing.
+PRs for new scripts that skip this process will be closed. -->  
 
-## Description
-
-Provide a summary of the changes made and/or reference the issue being addressed.
-
-Fixes # (issue)
-
-## Type of change
-Please check the relevant option(s):
-
-- [ ] Bug fix (non-breaking change that resolves an issue)
-- [ ] New feature (non-breaking change that adds functionality)
-- [ ] Breaking change (a fix or feature that would cause existing functionality to change unexpectedly)
-- [ ] New script (a fully functional and thoroughly tested script or set of scripts.)
-
-## Prerequisites
-The following efforts must be made for the PR to be considered. Please check when completed:
-- [ ] Self-review performed (I have reviewed my code, ensuring it follows established patterns and conventions)
-- [ ] Testing performed (I have tested my changes, ensuring everything works as expected)
-- [ ] Documentation updated (I have updated any relevant documentation)
-
-## Additional Information (optional)
-Provide any additional context or screenshots about the feature or fix here.
+## ✍️ Description  
+<!-- Briefly describe your changes. -->  
 
 
-## Related Pull Requests / Discussions
+## 🔗 Related PR / Issue  
+Link: #
 
-If there are other pull requests or discussions related to this change, please link them here:
-- Related PR #
+
+## ✅ Prerequisites  (**X** in brackets) 
+
+- [ ] **Self-review completed** – Code follows project standards.  
+- [ ] **Tested thoroughly** – Changes work as expected.  
+- [ ] **No breaking changes** – Existing functionality remains intact.  
+- [ ] **No security risks** – No hardcoded secrets, unnecessary privilege escalations, or permission issues.  
+
+---
+
+## 🛠️ Type of Change (**X** in brackets)  
+
+- [ ] 🐞 **Bug fix** – Resolves an issue without breaking functionality.  
+- [ ] ✨ **New feature** – Adds new, non-breaking functionality.  
+- [ ] 💥 **Breaking change** – Alters existing functionality in a way that may require updates.  
+- [ ] 🆕 **New script** – A fully functional and tested script or script set.  
+- [ ] 🌍 **Website update** – Changes to website-related JSON files or metadata.  
+- [ ] 🔧 **Refactoring / Code Cleanup** – Improves readability or maintainability without changing functionality.  
+- [ ] 📝 **Documentation update** – Changes to `README`, `AppName.md`, `CONTRIBUTING.md`, or other docs.  
+
+---
+
+## 🔍 Code & Security Review  (**X** in brackets) 
+
+- [ ] **Follows `Code_Audit.md` & `CONTRIBUTING.md` guidelines**
+
+
+## 📋 Additional Information (optional)  
+<!-- Add any extra context, screenshots, or references. -->  
